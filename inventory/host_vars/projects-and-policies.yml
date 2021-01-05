@@ -4,8 +4,13 @@ ci_cd:
   NAMESPACE_DISPLAY_NAME: "{{ namespace_prefix | title}}s CI/CD"
 
 dev:
+  NAMESPACE: "{{ namespace_prefix }}-dev"
+  NAMESPACE_DISPLAY_NAME: "{{ namespace_prefix | title}} Dev"
 
 test:
+  NAMESPACE: "{{ namespace_prefix }}-test"
+  NAMESPACE_DISPLAY_NAME: "{{ namespace_prefix | title}} Test"
+
 
 ansible_connection: local
 openshift_cluster_content:
@@ -15,5 +20,17 @@ openshift_cluster_content:
     template: "{{ playbook_dir }}/templates/project-requests.yml"
     action: create
     params_from_vars: "{{ ci_cd }}" 
+    tags:
+    - projects
+  - name: "{{ dev_namespace }}"
+    template: "{{ playbook_dir }}/templates/project-requests.yml"
+    action: create
+    params_from_vars: "{{ dev }}" 
+    tags:
+    - projects
+  - name: "{{ test_namespace }}"
+    template: "{{ playbook_dir }}/templates/project-requests.yml"
+    action: create
+    params_from_vars: "{{ test }}" 
     tags:
     - projects

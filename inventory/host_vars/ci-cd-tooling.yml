@@ -6,3 +6,9 @@ openshift_cluster_content:
   - "{{ inventory_dir }}/../exercise-requirements.yml"
 - object: ci-cd-tooling
   content:
+  - name: "nexus"
+    namespace: "{{ ci_cd_namespace }}"
+    template: "{{ openshift_templates_raw }}/{{ openshift_templates_raw_version_tag }}/nexus/nexus-deployment-template.yml"
+    params: "{{ playbook_dir }}/params/nexus"
+    tags:
+    - nexus

@@ -5,7 +5,7 @@
 #  - keep it lowercase
 #  - do NOT use special characters
 #  - make sure to replace the entire string between the double quotes - including the '<' and '>'
-namespace_prefix: "<YOUR_NAME>"
+namespace_prefix: "williamnew"
 
 # When the ocp_templates gets moved to cop land we can merge the two raws below
 openshift_templates_raw: "https://raw.githubusercontent.com/rht-labs/openshift-templates"
