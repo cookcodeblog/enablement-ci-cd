@@ -12,3 +12,9 @@ openshift_cluster_content:
     params: "{{ playbook_dir }}/params/nexus"
     tags:
     - nexus
+  - name: "jenkins-mongodb"
+    namespace: "{{ ci_cd_namespace }}"
+    template: "{{ playbook_dir }}/templates/mongodb-ephemeral.yml"
+    params: "{{ playbook_dir }}/params/mongodb"
+    tags:
+    - mongodb
