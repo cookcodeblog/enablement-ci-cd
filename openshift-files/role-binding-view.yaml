@@ -1,0 +1,42 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: sonarqube_view
+subjects:
+  - kind: ServiceAccount
+    name: sonarqube
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+
+---
+
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: "${NAME}_view"
+  roleRef:
+    name: view
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+  subjects:
+  - kind: ServiceAccount
+    name: "${NAME}"
+
+---
+
+- apiVersion: rbac.authorization.k8s.io/v1
+    groupNames: null
+    kind: RoleBinding
+    metadata:
+      name: ${JENKINS_SERVICE_NAME}_edit
+    roleRef:
+      name: edit
+      apiGroup: rbac.authorization.k8s.io
+      kind: ClusterRole
+    subjects:
+      - kind: ServiceAccount
+        name: ${JENKINS_SERVICE_NAME}
+
+        

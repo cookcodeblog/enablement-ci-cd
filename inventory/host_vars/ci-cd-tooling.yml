@@ -46,3 +46,17 @@ openshift_cluster_content:
     params_from_vars: "{{ ci_cd }}"
     tags:
     - jenkins
+- object: ci-cd-deployment
+  content:
+  - name: "sonarqube-postgresql"
+    namespace: "{{ ci_cd_namespace }}"
+    template: "{{ playbook_dir }}/templates/postgresql-ephemeral.yml"
+    params: "{{ playbook_dir }}/params/postgresql"
+    tags:
+    - postgresql
+  - name: "sonarqube"
+    namespace: "{{ ci_cd_namespace }}"
+    template: "{{ playbook_dir }}/templates/sonarqube-deploy.yml"
+    params: "{{ playbook_dir }}/params/sonarqube"
+    tags:
+    - sonarqube
