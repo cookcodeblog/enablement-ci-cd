@@ -206,3 +206,95 @@ Reference:
 
 ## Jenkins integrate with Slack
 
+https://plugins.jenkins.io/slack/
+
+https://www.jenkins.io/doc/pipeline/steps/slack/
+
+
+
+Choose a slack channel, and add Jenkins CI integration.
+
+
+
+https://do500.slack.com/services/B01HK36NQ5D?added=1
+
+
+
+
+
+After it's installed, click on **Manage Jenkins** again in the left navigation, and then go to **Configure System**. Find the **Global Slack Notifier Settings** section and add the following values:
+
+- **Team Subdomain:** `do500`
+- **Integration Token Credential ID:** Create a secret text credential using `Fbuh5juEMJX3fyRRhm9qNmF0` as the value
+
+
+
+```bash
+Fbuh5juEMJX3fyRRhm9qNmF0
+```
+
+
+
+
+
+https://do500.slack.com/services/1597108772183?updated=1
+
+
+
+Redploy Jenkins
+
+
+
+```bash
+env no_proxy="*" ansible-playbook apply.yml -e target=tools \
+  -i inventory/ \
+  -e "filter_tags=jenkins"
+```
+
+
+
+Create Slack credential:
+
+```bash
+Credential / Secret text / Slack token
+```
+
+
+
+
+
+Configure Slack globally:
+
+Configure System / Slack
+
+```bash
+
+Username: jenkins
+
+# strange, use "do500" as team workspace not work.
+Override url: https://do500.slack.com/services/hooks/jenkins-ci/
+```
+
+
+
+Configure per job:
+
+```bash
+Username: jenkins
+
+# strange, use "do500" as team workspace not work.
+Override url: https://do500.slack.com/services/hooks/jenkins-ci/
+
+# leave it to empty ? to use default channel ?
+Channel: #hongkong-jan4-8-2021
+```
+
+
+
+Test connection after configure them.
+
+
+
+References:
+
+- https://www.cidevops.com/2018/05/jenkins-slack-integration-jenkins-push.html
