@@ -166,3 +166,4 @@ workflow-step-api:2.20
 workflow-support:3.3
 ws-cleanup:0.37
 xunit:2.3.5
+slack:2.37

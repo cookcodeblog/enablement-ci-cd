@@ -1,0 +1,5 @@
+SOURCE_REPOSITORY_URL=https://gitlab-ce.apps.hkha-1.apac-1.rht-labs.com/lsirui/enablement-ci-cd.git
+NAME=jenkins
+SOURCE_REPOSITORY_CONTEXT_DIR=jenkins-s2i
+SOURCE_REPOSITORY_USERNAME=lsirui
+SOURCE_REPOSITORY_PASSWORD="DO500!@#"

@@ -1,4 +1,7 @@
 ---
+ci_cd:
+  IMAGE_STREAM_NAMESPACE: "{{ ci_cd_namespace }}"
+
 ansible_connection: local
 
 openshift_cluster_content:
@@ -18,3 +21,28 @@ openshift_cluster_content:
     params: "{{ playbook_dir }}/params/mongodb"
     tags:
     - mongodb
+  - name: "jenkins"
+    namespace: "{{ ci_cd_namespace }}"
+    template: "{{ openshift_templates_raw }}/{{ openshift_templates_raw_version_tag }}/jenkins/jenkins-persistent-template.yml"
+    params: "{{ playbook_dir }}/params/jenkins"
+    post_steps:
+      - role: casl-ansible/roles/openshift-imagetag
+        vars:
+          source_img: "quay.io/rht-labs/enablement-npm:latest"
+          img_tag: "jenkins-agent-npm:latest"
+      - role: casl-ansible/roles/openshift-labels
+        vars:
+          label: "role=jenkins-slave"
+          target_object: "imagestream"
+          target_name: "jenkins-agent-npm"
+    tags:
+    - jenkins
+- object: ci-cd-builds
+  content:
+  - name: "jenkins-s2i"
+    namespace: "{{ ci_cd_namespace }}"
+    template: "{{ playbook_dir }}/templates/jenkins-s2i-build-template-with-secret.yml"
+    params: "{{ playbook_dir }}/params/jenkins-s2i"
+    params_from_vars: "{{ ci_cd }}"
+    tags:
+    - jenkins
