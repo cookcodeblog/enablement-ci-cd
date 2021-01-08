@@ -2,6 +2,13 @@
 ci_cd:
   IMAGE_STREAM_NAMESPACE: "{{ ci_cd_namespace }}"
 
+arachni:
+  SOURCE_REPOSITORY_URL: "{{ cop_quickstarts }}"
+  SOURCE_CONTEXT_DIR: jenkins-agents/jenkins-agent-arachni
+  BUILDER_IMAGE_NAME: quay.io/openshift/origin-jenkins-agent-base:4.5
+  NAME: jenkins-agent-arachni
+  SOURCE_REPOSITORY_REF: "{{ cop_quickstarts_raw_version_tag }}"
+
 ansible_connection: local
 
 openshift_cluster_content:
@@ -60,3 +67,27 @@ openshift_cluster_content:
     params: "{{ playbook_dir }}/params/sonarqube"
     tags:
     - sonarqube
+- object: jenkins-agent-nodes
+  content:
+    - name: jenkins-agent-zap
+      namespace: "{{ ci_cd_namespace }}"
+      pre_steps:
+        - role: casl-ansible/roles/openshift-imagetag
+          vars:
+            source_img: "quay.io/rht-labs/jenkins-slave-zap:do500.v2"
+            img_tag: "jenkins-agent-zap:latest"
+        - role: casl-ansible/roles/openshift-labels
+          vars:
+            label: "role=jenkins-slave"
+            target_object: "imagestream"
+            target_name: "jenkins-agent-zap"
+      tags:
+      - jenkins-agents
+      - zap-agent
+    - name: jenkins-agent-arachni
+      template: "{{ cop_quickstarts_raw }}/{{ cop_quickstarts_raw_version_tag }}/.openshift/templates/jenkins-agent-generic-template.yml"
+      params_from_vars: "{{ arachni }}"
+      namespace: "{{ ci_cd_namespace }}"
+      tags:
+      - jenkins-agents
+      - arachni-agent
